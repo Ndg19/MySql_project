@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Product</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ece9e6, #ffffff);
+      padding: 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    fieldset {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    legend {
+      padding: 0 10px;
+      font-weight: bold;
+      color: #444;
+      font-size: 1.1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      font-size: 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .features {
+      background-color: #fdfdfd;
+      border-left: 5px solid #007bff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .features h2 {
+      margin-bottom: 15px;
+    }
+
+    .features ul {
+      list-style-type: square;
+      color: #333;
+      font-size: 16px;
+      padding-left: 20px;
+    }
+
+    .features ul li {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+
+      form {
+        padding: 20px;
+      }
+
+      .features {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Add Product Form</h1>
+  <form action="http://localhost:3001/addiphones" method="POST">
+    <!-- Products Table -->
+    <fieldset>
+      <legend>Product Info</legend>
+      <label>Product Name:</label>
+      <input type="text" name="product_name" required />
+
+      <label>Product URL:</label>
+      <input type="text" name="product_url" required />
+    </fieldset>
+
+    <!-- Product Description Table -->
+    <fieldset>
+      <legend>Product Description</legend>
+      <label>Brief Description:</label>
+      <input type="text" name="product_brief_description" required />
+
+      <label>Full Description:</label>
+      <textarea name="product_description" required></textarea>
+
+      <label>Image URL:</label>
+      <input type="text" name="product_img" required />
+
+      <label>Product Link:</label>
+      <input type="text" name="product_link" required />
+    </fieldset>
+
+    <!-- Product Price Table -->
+    <fieldset>
+      <legend>Product Price</legend>
+      <label>Starting Price:</label>
+      <input type="text" name="starting_price" required />
+
+      <label>Price Range:</label>
+      <input type="text" name="price_range" required />
+    </fieldset>
+
+    <!-- User Table -->
+    <fieldset>
+      <legend>User Info</legend>
+      <label>User Name:</label>
+      <input type="text" name="user_name" required />
+
+      <label>User Password:</label>
+      <input type="password" name="user_password" required />
+    </fieldset>
+
+    <button type="submit">Submit Product & Order</button>
+  </form>
+
+  
+</body>
+</html>
