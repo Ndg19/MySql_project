@@ -3,6 +3,7 @@ require("dotenv").config();
 const mysql = require("mysql2");
 const express = require("express");
 var cors = require("cors");
+const path = require("path");
 
 
 var app = express(); 
@@ -110,6 +111,11 @@ app.get("/install", (req, res) => {
 // });
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+});
+
+// ✅ GET: Show the form at /addiphones
+app.get("/add-product", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 
