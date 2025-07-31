@@ -193,14 +193,12 @@
 
     <button type="submit">Submit Product & Order</button>
   </form>
-
-  
 </body>
-<h1>📱 Products from Database</h1>
+<h1> Products from Database</h1>
   <div id="product-container"></div>
 
   <script>
-    fetch("http://localhost:3001/api/products")
+    fetch("http://localhost:3001/products")
       .then(response => response.json())
       .then(products => {
         const container = document.getElementById("product-container");
@@ -213,8 +211,7 @@
             <p><strong>Brief:</strong> ${product.product_brief_description}</p>
             <p><strong>Description:</strong> ${product.product_description}</p>
             <p><strong>Starting Price:</strong> ${product.starting_price}</p>
-            <p><strong>Price Range:</strong> ${product.price_range}</p>
-            <a href="${product.product_link}" target="_blank">View Product</a>
+            <p><strong>Price Range:</strong> ${product.price_range}</p>            
           `;
           container.appendChild(card);
         });

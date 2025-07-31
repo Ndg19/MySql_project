@@ -1,20 +1,15 @@
-
 require("dotenv").config();
 const mysql = require("mysql2");
 const express = require("express");
 var cors = require("cors");
 const path = require("path");
+const util = require("util");
 
-
-
-
-var app = express(); 
+var app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3001;
-
-
 
 var mysqlConnection = mysql.createConnection({
   // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock", //path to mysql sock in MAMP
@@ -37,10 +32,9 @@ mysqlConnection.connect((err) => {
   else console.log("Connected");
 });
 
-
 app.get("/install", (req, res) => {
   let message = "Tables Created Successfully";
-
+ 
   const createProducts = `
     CREATE TABLE IF NOT EXISTS Products (
       product_id INT AUTO_INCREMENT,
@@ -50,16 +44,17 @@ app.get("/install", (req, res) => {
     )`;
 
   const createProductDescription = `
-    CREATE TABLE IF NOT EXISTS ProductDescription (
-      description_id INT AUTO_INCREMENT,
-      product_id INT NOT NULL,
-      product_brief_description VARCHAR(255) NOT NULL,
-      product_description VARCHAR(255) NOT NULL,
-      product_img VARCHAR(255) NOT NULL,
-      product_link VARCHAR(255) NOT NULL,
-      PRIMARY KEY (description_id),
-      FOREIGN KEY (product_id) REFERENCES Products(product_id)
-    )`;
+  CREATE TABLE IF NOT EXISTS ProductDescription (
+    description_id INT AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    product_brief_description TEXT NOT NULL,
+    product_description TEXT NOT NULL,
+    product_img VARCHAR(255) NOT NULL,
+    product_link VARCHAR(255) NOT NULL,
+    PRIMARY KEY (description_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+  )
+`;
 
   const createProductPrice = `
     CREATE TABLE IF NOT EXISTS ProductPrice (
@@ -107,20 +102,7 @@ app.get("/install", (req, res) => {
     });
   });
 });
-// Start server on port 3001
-// app.listen(3001, () => {
-//   console.log("Server is running at http://localhost:3001");
-// });
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
-
-// GET: Show the form at /add-product
-app.get("/add-product", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-
+// //method 1
 app.post("/addiphones", (req, res) => {
   const {
     product_name,
@@ -192,7 +174,6 @@ app.post("/addiphones", (req, res) => {
   );
 });
 
-
 // GET route to fetch products with joined data
 // app.get("/products", (req, res) => {
 //   const sql = `
@@ -219,7 +200,97 @@ app.post("/addiphones", (req, res) => {
 // });
 
 // API endpoint to get product data
-app.get("/api/products", (req, res) => {
+
+////Method
+
+// const query = util.promisify(mysqlConnection.query).bind(mysqlConnection);
+
+// async function insertProduct(product_url, product_name) {
+//   const result = await query(
+//     `INSERT INTO Products (product_url, product_name) VALUES (?, ?)`,
+//     [product_url, product_name]
+//   );
+//   return result.insertId;
+// }
+
+// async function insertProductDescription(product_id, desc) {
+//   return query(
+//     `INSERT INTO ProductDescription
+//      (product_id, product_brief_description, product_description, product_img, product_link)
+//      VALUES (?, ?, ?, ?, ?)`,
+//     [
+//       product_id,
+//       desc.product_brief_description,
+//       desc.product_description,
+//       desc.product_img,
+//       desc.product_link,
+//     ]
+//   );
+// }
+
+// async function insertProductPrice(product_id, price) {
+//   return query(
+//     `INSERT INTO ProductPrice (product_id, starting_price, price_range) VALUES (?, ?, ?)`,
+//     [product_id, price.starting_price, price.price_range]
+//   );
+// }
+
+// async function insertUser(user_name, user_password) {
+//   const result = await query(
+//     `INSERT INTO UserTable (user_name, user_password) VALUES (?, ?)`,
+//     [user_name, user_password]
+//   );
+//   return result.insertId;
+// }
+
+// async function insertOrder(product_id, user_id) {
+//   return query(`INSERT INTO OrderTable (product_id, user_id) VALUES (?, ?)`, [
+//     product_id,
+//     user_id,
+//   ]);
+// }
+
+// app.post("/addiphones", async (req, res) => {
+//   const {
+//     product_name,
+//     product_url,
+//     product_brief_description,
+//     product_description,
+//     product_img,
+//     product_link,
+//     starting_price,
+//     price_range,
+//     user_name,
+//     user_password,
+//   } = req.body;
+
+//   try {
+//     const product_id = await insertProduct(product_url, product_name);
+
+//     await insertProductDescription(product_id, {
+//       product_brief_description,
+//       product_description,
+//       product_img,
+//       product_link,
+//     });
+
+//     await insertProductPrice(product_id, {
+//       starting_price,
+//       price_range,
+//     });
+
+//     const user_id = await insertUser(user_name, user_password);
+
+//     await insertOrder(product_id, user_id);
+
+//     res.send("All data saved successfully");
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Error saving data");
+//   }
+// });
+
+app.get("/products", (req, res) => {
   const sql = `
     SELECT 
       p.product_id,
@@ -249,4 +320,14 @@ app.get("/api/products", (req, res) => {
   });
 });
 
-
+// GET: Show the form at /add-product
+app.get("/add-product", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+// Start server on port 3001
+// app.listen(3001, () => {
+//   console.log("Server is running at http://localhost:3001");
+// });
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});
