@@ -6,6 +6,8 @@ var cors = require("cors");
 const path = require("path");
 
 
+
+
 var app = express(); 
 app.use(cors());
 app.use(express.json());
@@ -113,7 +115,7 @@ app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
-// ✅ GET: Show the form at /addiphones
+// GET: Show the form at /add-product
 app.get("/add-product", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -189,3 +191,62 @@ app.post("/addiphones", (req, res) => {
     }
   );
 });
+
+
+// GET route to fetch products with joined data
+// app.get("/products", (req, res) => {
+//   const sql = `
+//     SELECT p.product_id, p.product_name, p.product_url,
+//            pd.product_brief_description, pd.product_description, pd.product_img, pd.product_link,
+//            pp.starting_price, pp.price_range,
+//            u.user_name
+//     FROM Products p
+//     LEFT JOIN ProductDescription pd ON p.product_id = pd.product_id
+//     LEFT JOIN ProductPrice pp ON p.product_id = pp.product_id
+//     LEFT JOIN OrderTable o ON p.product_id = o.product_id
+//     LEFT JOIN UserTable u ON o.user_id = u.user_id;
+//   `;
+
+//   mysqlConnection.query(sql, (err, results) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).send("Error fetching products");
+//     }
+
+//     // Render the 'products.ejs' template with the results
+//     res.render("products", { products: results });
+//   });
+// });
+
+// API endpoint to get product data
+app.get("/api/products", (req, res) => {
+  const sql = `
+    SELECT 
+      p.product_id,
+      p.product_name,
+      p.product_url,
+      pd.product_brief_description,
+      pd.product_description,
+      pd.product_img,
+      pd.product_link,
+      pp.starting_price,
+      pp.price_range,
+      u.user_id,
+      u.user_name
+    FROM Products p
+    LEFT JOIN ProductDescription pd ON p.product_id = pd.product_id
+    LEFT JOIN ProductPrice pp ON p.product_id = pp.product_id
+    LEFT JOIN OrderTable o ON p.product_id = o.product_id
+    LEFT JOIN UserTable u ON o.user_id = u.user_id;
+  `;
+
+  mysqlConnection.query(sql, (err, results) => {
+    if (err) {
+      console.error("SQL error:", err);
+      return res.status(500).send("Database error");
+    }
+    res.json(results);
+  });
+});
+
+
