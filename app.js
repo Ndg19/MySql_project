@@ -11,14 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3001;
 
-// var mysqlConnection = mysql.createConnection({
-//   // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock", //path to mysql sock in MAMP
-//   user: "myDBuser",
-//   password: "admin123",
-//   host: "localhost",
-//   database: "myDB",
-// });
-
 // MySQL connection setup using environment variables
 const mysqlConnection = mysql.createConnection({
   user: process.env.DB_USER,
@@ -290,7 +282,7 @@ app.post("/addiphones", (req, res) => {
 //   }
 // });
 
-app.get("/products", (req, res) => {
+app.get("/iphones", (req, res) => {
   const sql = `
     SELECT 
       p.product_id,
@@ -316,18 +308,16 @@ app.get("/products", (req, res) => {
       console.error("SQL error:", err);
       return res.status(500).send("Database error");
     }
+   //console.log(results)
     res.json(results);
+   //console.log(results)
   });
 });
 
 // GET: Show the form at /add-product
-app.get("/add-product", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-// Start server on port 3001
-// app.listen(3001, () => {
-//   console.log("Server is running at http://localhost:3001");
-// });
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
