@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const express = require("express");
 var cors = require("cors");
 const path = require("path");
-const util = require("util");
+//const util = require("util");
 
 var app = express();
 app.use(cors());
@@ -11,21 +11,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3001;
 
-var mysqlConnection = mysql.createConnection({
-  // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock", //path to mysql sock in MAMP
-  user: "myDBuser",
-  password: "admin123",
-  host: "localhost",
-  database: "myDB",
-});
+// var mysqlConnection = mysql.createConnection({
+//   // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock", //path to mysql sock in MAMP
+//   user: "myDBuser",
+//   password: "admin123",
+//   host: "localhost",
+//   database: "myDB",
+// });
 
 // MySQL connection setup using environment variables
-// const mysqlConnection = mysql.createConnection({
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-// });
+const mysqlConnection = mysql.createConnection({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+});
 
 mysqlConnection.connect((err) => {
   if (err) console.log(err);
