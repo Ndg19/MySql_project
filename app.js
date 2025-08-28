@@ -26,7 +26,7 @@ mysqlConnection.connect((err) => {
 
 app.get("/install", (req, res) => {
   let message = "Tables Created Successfully";
- 
+
   const createProducts = `
     CREATE TABLE IF NOT EXISTS Products (
       product_id INT AUTO_INCREMENT,
@@ -308,9 +308,10 @@ app.get("/iphones", (req, res) => {
       console.error("SQL error:", err);
       return res.status(500).send("Database error");
     }
-   //console.log(results)
-    res.json(results);
-   //console.log(results)
+    //console.log(results)
+    const Iphons = { products: results };
+    res.json(Iphons);
+    //console.log(results)
   });
 });
 
@@ -318,6 +319,30 @@ app.get("/iphones", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+// Single Iphone product
+app.get("/iphones/:id", (req, res) => {
+  const phoneId = req.params.id;
+  const query = `
+    SELECT * FROM Products
+    JOIN ProductDescription ON Products.product_id = ProductDescription.product_id
+    JOIN ProductPrice ON Products.product_id = ProductPrice.product_id
+    WHERE Products.product_id = ?
+  `;
+
+  mysqlConnection.query(query, [phoneId], (err, rows) => {
+    if (err) {
+      console.error("Database error:", err);
+      res.status(500).send("Internal Server Error");
+    } else if (rows.length === 0) {
+      res.status(404).send("Product not found");
+    } else {
+      const phone = rows[0];
+      res.json(phone);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
